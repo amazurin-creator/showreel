@@ -20,11 +20,11 @@ TOP = [
     ('cafe-w', 'Efaga · скетч в фитнес-кафе', 'Диалог двух персонажей, одни лица во всех сценах, POV-скан витрины.', 'Nano Banana · Kling · ElevenLabs · ≈ $3.5'),
     ('lag-pilot', 'AWIO · пилот', 'Кабина, техническая документация, крупные планы. Версии на ES, PT, TR.', 'ИИ-видео · голос · локализация'),
     ('react', 'Efaga · реакция на вирусный рилс', 'Героиня с синхроном губ отвечает блогеру. 1,3 тыс. просмотров за сутки на аккаунте с 5 подписчиками.', 'Kling · lip-sync · ElevenLabs · ≈ $1.5'),
+    ('lag-it', 'AWIO · IT-специалист', 'Офис, коллега через плечо, хук про технический английский.', 'ИИ-видео · голос · локализация'),
     ('lag-maritime', 'AWIO · моряк', '«Он знает, что делать, но не может сказать». Индустриальная сцена, эмоция крупным планом.', 'ИИ-видео · голос · локализация'),
 ]
 
 LAG = [
-    ('lag-it', 'IT-специалист', 'Офис, коллега через плечо, хук про технический английский.'),
     ('lag-mechanic', 'Авиатехник', 'Ангар, турбина, сигнальный жилет.'),
     ('lag-teacher', 'Учитель', 'Класс, доска с формулами.'),
     ('lag-online-teacher', 'Онлайн-преподаватель', 'Гарнитура, нервный урок по видеосвязи.'),
@@ -154,7 +154,7 @@ doc = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name=
 <meta name="description" content="ИИ-ролики, генерация персонажей, статика и инфлюенс-маркетинг под ключ.">
 <meta property="og:title" content="Артём Мазурин — ИИ-видео и креативы"><meta property="og:image" content="img/c-efi2-sheet.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head><body>
+<link rel="stylesheet" href="style.css?v=4"></head><body>
 <header class="hero"><div class="wrap">
 <p class="kicker">Портфолио · 2025–2026</p>
 <h1>Делаю рекламу<br>с&nbsp;<span>ИИ</span>: ролики, персонажи, статику</h1>
