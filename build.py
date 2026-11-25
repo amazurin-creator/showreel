@@ -9,11 +9,16 @@ def fmt(n):
 
 
 # id, название, что это, инструменты, стоимость генерации
+BEST = [  # (тип, id, название, метрики, пояснение)
+    ('v', 'mistake-m', 'Ролик «#1 mistake»', ['установка дешевле в 2,5 раза', '47% смотрят дольше 3 секунд', '45 установок'], 'Лучший креатив кампании по цене установки.'),
+    ('i', 'm-goal', 'Баннер «Tap your goal weight»', ['CTR 3%', '17 тыс. показов', '34 установки'], 'Главная статика: больше всего показов и кликов.'),
+    ('v', 'mistake-w', 'Ролик «#1 mistake», женская версия', ['CTR 3,2%', '46% смотрят дольше 3 секунд'], 'Самый высокий CTR среди роликов.'),
+    ('i', 'm-plate', 'Баннер «Snap your plate. Efi finds the grams»', ['CTR 2%', 'вдвое выше рынка'], 'Вторая по силе статика.'),
+]
 TOP = [
     ('lag-stewardess', 'AWIO · бортпроводница', 'Реклама приложения по авиационному английскому. Персонаж, сцена и голос сгенерированы.', 'ИИ-видео · голос · локализация'),
     ('cafe-w', 'Efaga · скетч в фитнес-кафе', 'Диалог двух персонажей, одни лица во всех сценах, POV-скан витрины.', 'Nano Banana · Kling · ElevenLabs · ≈ $3.5'),
     ('lag-pilot', 'AWIO · пилот', 'Кабина, техническая документация, крупные планы. Версии на ES, PT, TR.', 'ИИ-видео · голос · локализация'),
-    ('mistake-m', 'Efaga · «#1 mistake»', '47% зрителей досматривают первые 3 секунды. Установка в 2,5 раза дешевле, чем со статики.', 'Flux · Kling · ElevenLabs · ≈ $3'),
     ('react', 'Efaga · реакция на вирусный рилс', 'Героиня с синхроном губ отвечает блогеру. 1,3 тыс. просмотров за сутки на аккаунте с 5 подписчиками.', 'Kling · lip-sync · ElevenLabs · ≈ $1.5'),
     ('lag-maritime', 'AWIO · моряк', '«Он знает, что делать, но не может сказать». Индустриальная сцена, эмоция крупным планом.', 'ИИ-видео · голос · локализация'),
 ]
@@ -33,7 +38,6 @@ LAG = [
 EFAGA = [
     ('find-m', '«And now I find this?» — мужская', 'A/B-версия под мужскую аудиторию.', '≈ $0.7'),
     ('cafe-m', 'Скетч в кафе — мужская', 'Те же сцены с другим героем.', '≈ $3.5'),
-    ('mistake-w', '«#1 mistake» — женская', 'CTR 3,2%, досмотр первых 3 секунд 46%.', '≈ $3'),
     ('find-w', '«And now I find this?»', 'Шок-хук за 3 секунды, потом три фичи приложения.', '≈ $0.7'),
     ('review-e05', 'Эфи разбирает рецепт', 'Серия: героиня в окошке смотрит чужой рецепт, приложение его считает.', '≈ $1.7'),
     ('review-e01', 'Эфи разбирает рецепт — эпизод 1', 'Полный формат с записью экрана.', '≈ $1.7'),
@@ -111,7 +115,18 @@ def more(label, inner):
     return f'<details class="more"><summary>{e(label)}</summary>{inner}</details>'
 
 
-top = ''.join(vcard(*x, big=True) for x in TOP)
+def bcard(kind, i, t, metrics, note):
+    chips = ''.join(f'<span class="chip">{e(m)}</span>' for m in metrics)
+    if kind == 'v':
+        media = f'<button class="play" data-src="v/{i}.mp4" aria-label="Смотреть: {e(t)}"><img src="v/{i}.jpg" alt="" loading="lazy"><span class="pbtn">▶</span></button>'
+    else:
+        media = f'<div class="still"><img src="img/{i}.jpg" alt="{e(t)}" loading="lazy"></div>'
+    return f'<figure class="vcard best">{media}<figcaption><b>{e(t)}</b><span>{e(note)}</span><div class="chips">{chips}</div></figcaption></figure>'
+
+
+best = ''.join(bcard(*x) for x in BEST)
+lag_top = ''.join(vcard(*x, big=True) for x in TOP if x[0].startswith('lag'))
+efaga_top = ''.join(vcard(*x) for x in TOP if not x[0].startswith('lag'))
 lag = ''.join(vcard(i, t, n, '') for i, t, n in LAG)
 efaga = ''.join(vcard(i, t, n, g) for i, t, n, g in EFAGA)
 
@@ -145,7 +160,7 @@ doc = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name=
 <h1>Делаю рекламу<br>с&nbsp;<span>ИИ</span>: ролики, персонажи, статику</h1>
 <p class="lead">Артём Мазурин. Сценарий, генерация героев и сцен, анимация, голос, монтаж. И блогеры под ключ: от первого сообщения до опубликованного рилса.</p>
 <ul class="stats"><li><b>40+</b>ИИ-роликов, включая локализации</li><li><b>от $0,7</b>генерация одного ролика</li><li><b>{fmt(round(VIEWS / 1000))}&nbsp;тыс.</b>просмотров у рилсов блогеров</li><li><b>€{CPM:.1f}</b>за 1000 просмотров у блогеров</li></ul>
-<nav><a href="#best">Лучшее</a><a href="#results">Результаты</a><a href="#lag">AWIO</a><a href="#efaga">Efaga</a><a href="#chars">Персонажи</a><a href="#static">Статика</a><a href="#influence">Блогеры</a></nav>
+<nav><a href="#best">Результаты</a><a href="#lag">AWIO</a><a href="#efaga">Efaga</a><a href="#chars">Персонажи</a><a href="#static">Статика</a><a href="#influence">Блогеры</a></nav>
 </div></header>
 <main class="wrap">
 <section id="best"><h2>Лучшее</h2><p class="sub">Шесть роликов, с которых стоит начать.</p><div class="vgrid top">{top}</div></section>
@@ -157,10 +172,12 @@ doc = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name=
 <li><b>3%</b><span>CTR у баннера «Tap your goal weight» на 17 тыс. показов</span><i>статика, 4:5 и 9:16</i></li></ul>
 <p class="note">Ноябрь 2026, Meta Ads Manager, 32 тыс. показов. Расход на рекламу не раскрываю.</p></section>
 
-<section id="lag"><h2>AWIO · реклама для LAG</h2><p class="sub">2025, работал дизайнером креативов. Реклама приложения по профессиональному английскому: каждая профессия — свой персонаж и своя боль. Каждый ролик локализован на испанский, португальский и турецкий, часть — на японский.</p>
+<section id="lag"><h2>AWIO · реклама для LAG</h2><p class="sub">2025, работал дизайнером креативов. Цифр по этим кампаниям у меня нет, поэтому здесь только сами ролики. Реклама приложения по профессиональному английскому: каждая профессия — свой персонаж и своя боль. Каждый ролик локализован на испанский, португальский и турецкий, часть — на японский.</p>
+<div class="vgrid top">{lag_top}</div>
 {more(f'Ещё {len(LAG)} роликов', f'<div class="vgrid">{lag}</div>')}</section>
 
 <section id="efaga"><h2>Efaga · реклама счётчика калорий</h2><p class="sub">Платная реклама для Meta Ads и органика для Instagram. Полный цикл: сценарий, генерация кадров, анимация, голос, синхрон губ, монтаж. Под каждым роликом — сколько стоила генерация.</p>
+<div class="vgrid">{efaga_top}</div>
 {more(f'Ещё {len(EFAGA)} роликов', f'<div class="vgrid">{efaga}</div>')}</section>
 
 <section id="chars"><h2>Генерация персонажей</h2><p class="sub">Главное в ИИ-видео — чтобы герой оставался одним человеком во всех кадрах. Сначала лист персонажа, потом от него каждая сцена.</p>
